@@ -107,4 +107,5 @@
     <string name="never">Never</string>
     <string name="last_scanned">Last scanned: %1$s</string>
     <string name="scanning_in_progress">Scanning in progress…</string>
+    <string name="show_details">Show details</string>
 </resources>

@@ -220,6 +220,16 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?attr/textAppearanceBodySmall"
                         tools:text="Last scanned: 10:25 PM 6th Jan, 2024" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnShowDetails"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/show_details" />
                 </LinearLayout>
             </LinearLayout>
 

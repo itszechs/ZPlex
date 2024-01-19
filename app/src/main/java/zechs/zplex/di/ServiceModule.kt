@@ -49,9 +49,10 @@ object ServiceModule {
     fun provideRemoteLibrary(
         driveRepository: DriveRepository,
         tmdbRepository: TmdbRepository,
-        sessionManager: SessionManager
+        sessionManager: SessionManager,
+        indexingStateFlow: IndexingStateFlow
     ): RemoteLibrary {
-        return RemoteLibraryRepository(driveRepository, tmdbRepository, sessionManager,)
+        return RemoteLibraryRepository(driveRepository, tmdbRepository, sessionManager, indexingStateFlow)
     }
 
 }

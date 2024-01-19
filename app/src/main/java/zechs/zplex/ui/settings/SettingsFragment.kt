@@ -31,6 +31,7 @@ import zechs.zplex.databinding.FragmentSettingsBinding
 import zechs.zplex.service.RemoteLibraryIndexingService
 import zechs.zplex.service.ServiceState
 import zechs.zplex.ui.settings.dialog.LoadingDialog
+import zechs.zplex.ui.settings.dialog.StatsDialog
 import zechs.zplex.utils.FolderPickerResultContract
 import zechs.zplex.utils.FolderType
 import zechs.zplex.utils.SelectedFolder
@@ -50,6 +51,7 @@ class SettingsFragment : Fragment() {
     private val viewModel by activityViewModels<SettingsViewModel>()
 
     private var loadingDialog: LoadingDialog? = null
+    private val statsDialog by lazy { StatsDialog(requireContext()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +127,7 @@ class SettingsFragment : Fragment() {
         loadingObserver()
         loginStatusObserver()
         indexingServiceObserver()
+        setupIndexingResultObserver()
     }
 
     private fun showFolderPickerDialog(
@@ -312,6 +315,7 @@ class SettingsFragment : Fragment() {
                     Intent(requireContext(), RemoteLibraryIndexingService::class.java)
                 )
             }
+            btnShowDetails.setOnClickListener { statsDialog.show() }
         }
     }
 
@@ -334,7 +338,25 @@ class SettingsFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
+            btnShowDetails.setOnClickListener {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.scanning_in_progress),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
+    }
+
+    private fun setupIndexingResultObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.combinedIndexingResult.collect { (movies, shows) ->
+                    statsDialog.updateStats(movies, shows)
+                }
+            }
+        }
+
     }
 
     override fun onDestroy() {
